@@ -139,7 +139,14 @@ button:hover {
 
 /* Estilo para el historial de pagos */
 .historial-pagos ul {
-    list-style-type: none; /* Elimina cualquier punto o marcador */
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0;
+    margin: 0;
+}
+
+/* Especificar más detalles para eliminar el punto */
+#historial-pagos ul {
+    list-style: none !important;  /* Elimina los puntos y usa !important para sobreescribir cualquier estilo conflictivo */
     padding: 0;
     margin: 0;
 }

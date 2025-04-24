@@ -245,7 +245,7 @@ async function initPage() {
         const paymentAmount = parseFloat(document.getElementById("paymentAmount").value);
 
         // Validar campos
-        if (!name || !cedula || !phone || !email || !address) {
+        if (!name) {
           alert("Por favor, llena todos los campos.");
           return;
         }
@@ -621,56 +621,81 @@ async function loadClientProfile(clientId) {
     
     const clientData = clientSnap.data();
     
-    // Mostrar información del cliente
+    // Mostrar información del cliente solo si tiene datos
     const clienteInfo = document.getElementById('cliente-info');
-    clienteInfo.innerHTML = `
+    let clienteInfoHTML = `
       <h2>${clientData.name}</h2>
       <div class="cliente-detalles">
-        <p><strong>Cédula:</strong> ${clientData.cedula}</p>
-        <p><strong>Teléfono:</strong> ${clientData.phone}</p>
-        <p><strong>Email:</strong> ${clientData.email}</p>
-        <p><strong>Dirección:</strong> ${clientData.address}</p>
+        <p><strong>Cédula:</strong> ${clientData.cedula || 'Información no disponible'}</p>
         <p><strong>Balance actual:</strong> $${clientData.balance || 0}</p>
-      </div>
     `;
+
+    // Solo mostrar Teléfono si tiene valor
+    if (clientData.phone) {
+      clienteInfoHTML += `<p><strong>Teléfono:</strong> ${clientData.phone}</p>`;
+    }
+
+    // Solo mostrar Email si tiene valor
+    if (clientData.email) {
+      clienteInfoHTML += `<p><strong>Email:</strong> ${clientData.email}</p>`;
+    }
+
+    // Solo mostrar Dirección si tiene valor
+    if (clientData.address) {
+      clienteInfoHTML += `<p><strong>Dirección:</strong> ${clientData.address}</p>`;
+    }
+
+    // Cerrar el div de detalles
+    clienteInfoHTML += `</div>`;
     
+    // Actualizar el HTML con la información del cliente
+    clienteInfo.innerHTML = clienteInfoHTML;
+
     // Cargar historial de pagos
-const abonosRef = db.collection(`clientes/${clientId}/abonos`).orderBy('date', 'desc');
-const abonosSnapshot = await abonosRef.get();
+    loadPaymentHistory(clientId);
 
-const historialPagos = document.getElementById('historial-pagos');
-
-if (abonosSnapshot.empty) {
-  historialPagos.innerHTML = '<p>No hay pagos registrados</p>';
-  return;
+  } catch (error) {
+    console.error("Error al cargar perfil:", error);
+    document.getElementById('cliente-info').innerHTML = 
+      '<p>Error al cargar información del cliente</p>';
+  }
 }
 
-let historialHTML = '<ul class="lista-pagos">';
+// Función para cargar historial de pagos
+async function loadPaymentHistory(clientId) {
+  const historialPagos = document.getElementById('historial-pagos');
+  try {
+    const abonosRef = db.collection(`clientes/${clientId}/abonos`).orderBy('date', 'desc');
+    const abonosSnapshot = await abonosRef.get();
+    
+    if (abonosSnapshot.empty) {
+      historialPagos.innerHTML = '<p>No hay pagos registrados</p>';
+      return;
+    }
 
-abonosSnapshot.forEach(doc => {
-  const abonoData = doc.data();
-  const fecha = abonoData.date ? abonoData.date.toDate().toLocaleDateString() : 'Fecha desconocida';
+    let historialHTML = '<ul class="lista-pagos">';
 
-  // Añadir el emoji ✅ al principio
-  historialHTML += `
-    <li>
-      <span class="emoji">✅</span> <!-- Emoji de pago -->
-      <span class="fecha">${fecha}</span> - 
-      <span class="monto">$${abonoData.amount}</span>
-    </li>
-  `;
-});
+    abonosSnapshot.forEach(doc => {
+      const abonoData = doc.data();
+      const fecha = abonoData.date ? abonoData.date.toDate().toLocaleDateString() : 'Fecha desconocida';
 
-historialHTML += '</ul>';
-historialPagos.innerHTML = historialHTML;
+      // Añadir el emoji ✅ al principio de cada pago
+      historialHTML += `
+        <li>
+          <span class="emoji">✅</span> <!-- Emoji de pago -->
+          <span class="fecha">${fecha}</span> - 
+          <span class="monto">$${abonoData.amount}</span>
+        </li>
+      `;
+    });
 
+    historialHTML += '</ul>';
+    historialPagos.innerHTML = historialHTML;
 
-} catch (error) {
-  console.error("Error al cargar perfil:", error);
-  document.getElementById('cliente-info').innerHTML = 
-    '<p>Error al cargar información del cliente</p>';
-}
-
+  } catch (error) {
+    console.error("Error al cargar el historial de pagos:", error);
+    historialPagos.innerHTML = "<p>Error al cargar el historial de pagos</p>";
+  }
 }
 
 // Función para cargar cliente destacado (en la página de inicio)
