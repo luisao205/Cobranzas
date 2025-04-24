@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Recaudado por Fecha</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Si es .ico en la raíz -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Si está en una carpeta o es .png -->
+  <link rel="icon" href="img/logo.png" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Recaudado por Fecha</h1>
+            <nav>
+                <a href="index.html" class="back-link">← Volver al Inicio</a>
+            </nav>
+        </header>
+        <main>
+            <form action="#" method="POST">
+                <label for="start-date">Fecha de Inicio</label>
+                <input type="date" id="start-date" name="start-date" required>
+
+                <label for="end-date">Fecha de Fin</label>
+                <input type="date" id="end-date" name="end-date" required>
+
+                <button type="submit">Ver Recaudado</button>
+            </form>
+            <div class="recaudado-results">
+                <!-- Los resultados de recaudado por fecha irían aquí -->
+            </div>
+        </main>
+    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Nuestro script -->
+    <script src="scripts.js"></script>
+</body>
+</html>

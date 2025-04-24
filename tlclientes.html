@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ver Todos los Clientes</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Si es .ico en la raíz -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Si está en una carpeta o es .png -->
+  <link rel="icon" href="img/logo.png" type="image/png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clientes Registrados</h1>
+            <nav>
+                <a href="index.html" class="back-link">← Volver al Inicio</a>
+            </nav>
+        </header>
+        <main>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Cédula</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="client-list">
+                    <!-- Los clientes se cargarán dinámicamente aquí -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <!-- Modal para Abonar -->
+    <div class="modal" id="modal-abono">
+        <div class="modal-content">
+            <h2>Abonar al Cliente</h2>
+            <label for="amount">Monto a abonar:</label>
+            <input type="number" id="amount" placeholder="Monto" required>
+            <button id="save-abono">Guardar Abono</button>
+            <button id="close-modal">Cerrar</button>
+        </div>
+    </div>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Nuestro script -->
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inicio - Sistema de Préstamos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Si es .ico en la raíz -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- Si está en una carpeta o es .png -->
+  <link rel="icon" href="img/logo.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f7f9fc;
+      color: #333;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .summary {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      flex: 1;
+      min-width: 200px;
+      padding: 1rem;
+      border-radius: 1rem;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+
+    .card p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .action-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      border-radius: 1rem;
+      background-color: #007bff;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .action-button:hover {
+      background-color: #0056b3;
+    }
+    
+    /* Estilos para el cliente destacado */
+    .featured-client {
+      background-color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
+    }
+    
+    .featured-client h2 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .client-info {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .client-details {
+      flex: 3;
+      min-width: 300px;
+    }
+    
+    .client-actions {
+      flex: 1;
+      min-width: 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .client-action {
+      padding: 0.75rem;
+      text-align: center;
+      background-color: #007bff;
+      color: white;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+    
+    .client-action:hover {
+      background-color: #0056b3;
+    }
+    
+    .client-action.secondary {
+      background-color: #6c757d;
+    }
+    
+    .client-action.secondary:hover {
+      background-color: #5a6268;
+    }
+    
+    .client-property {
+      margin-bottom: 0.5rem;
+      display: flex;
+    }
+    
+    .property-label {
+      font-weight: 600;
+      width: 120px;
+    }
+    
+    .property-value {
+      flex: 1;
+    }
+    
+    .no-client {
+      text-align: center;
+      padding: 2rem;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 Bienvenido al Sistema de Préstamos</h1>
+
+  <div class="summary">
+    <div class="card">
+      <h2>Total de Clientes</h2>
+      <p></p>
+    </div>
+    <div class="card">
+      <h2>Recaudado Hoy</h2>
+      <p></p>
+    </div>
+    <div class="card">
+      <h2>Préstamos Activos</h2>
+      <p></p>
+    </div>
+  </div>
+  
+  <!-- Sección de Perfil de Cliente -->
+  <div class="featured-client">
+    <h2>
+      Perfil de Cliente
+      <button id="refresh-client" class="client-action secondary" style="font-size: 0.8rem; padding: 0.3rem 0.5rem;">↻ Actualizar</button>
+    </h2>
+    <div id="featured-client-container">
+      <div class="no-client">
+        Cargando cliente destacado...
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <a href="ncliente.html" class="action-button">➕ Agregar Nuevo Cliente</a>
+    <a href="tlclientes.html" class="action-button">📁 Ver Todos los Clientes</a>
+    <a href="bcliente.html" class="action-button">🔍 Buscar Cliente</a>
+    <a href="rpfecha.html" class="action-button">📅 Ver Recaudado por Fecha</a>
+  </div>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <!-- Nuestro script -->
+  <script src="scripts.js"></script>
+</body>
+</html>
