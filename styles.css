@@ -65,34 +65,129 @@ input, textarea {
     border-radius: 4px;
 }
 
+/* Estilo de botones modernos */
+/* Mejoras visuales en los botones de acción */
 button {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px; /* Bordes redondeados */
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
     background-color: #0056b3;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
+
+/* Estilo general de las tarjetas */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Títulos de las tarjetas */
+.card h2 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Información del cliente */
+.client-info p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+/* Estilo para las acciones dentro del perfil */
+.actions {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.action-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para el historial de pagos */
+.historial-pagos ul {
+    list-style-type: none; /* Elimina cualquier punto o marcador */
+    padding: 0;
+    margin: 0;
+}
+
+.historial-pagos li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #555;
+}
+
+/* Estilo para el emoji */
+.historial-pagos li .emoji {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    color: #28a745;  /* Color verde para el emoji */
+}
+
+.historial-pagos li:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+
+/* Estilo de la tabla de clientes */
 table {
     width: 100%;
     margin-top: 20px;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 10px;
 }
 
 table th, table td {
-    padding: 10px;
+    padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-radius: 8px;
 }
 
 table th {
+    background-color: #f4f7fc;
+    font-weight: bold;
+}
+
+table tr:hover {
     background-color: #f8f9fa;
 }
 
@@ -108,16 +203,24 @@ table th {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out; /* Transición suave */
 }
 
 /* Contenido del modal */
 .modal-content {
     background-color: white;
     padding: 20px;
-    border-radius: 6px;
+    border-radius: 12px; /* Bordes redondeados */
     width: 300px;
-    text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    animation: fadeInModal 0.3s ease-out; /* Animación al abrir */
+}
+
+/* Animación del modal */
+@keyframes fadeInModal {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 /* Títulos del modal */
@@ -141,7 +244,7 @@ table th {
     background-color: #4C8BF5;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1.1em;
     margin-bottom: 10px;
@@ -152,45 +255,130 @@ table th {
     background-color: #4081D3;
 }
 
-/* Página de agregar cliente */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 500px;
-    margin: 0 auto;
+
+/* Estilos para mensajes de error */
+.form-error {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 5px;
 }
 
-form input {
+/* Estilos para mensajes de éxito */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
     padding: 10px;
-    border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 1em;
+    margin-top: 15px;
 }
 
-form button {
-    background-color: #4C8BF5; /* Azul */
+/* Estilos para mensajes de error */
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+/* Estilo para los campos con error */
+input.error, textarea.error {
+    border-color: #dc3545;
+}
+
+/* Estilos para los indicadores de carga */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.loading-spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mejorar estilos para dispositivos móviles */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .modal-content {
+        width: 90%;
+        max-width: 300px;
+    }
+}
+
+/* Estilo para las notificaciones (toasts) */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #28a745;
     color: white;
-    border: none;
-    padding: 12px;
-    font-size: 1.1em;
-    cursor: pointer;
-    border-radius: 6px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 
-form button:hover {
-    background-color: #4081D3; /* Azul oscuro */
+.toast.show {
+    display: block;
+    opacity: 1;
 }
 
-/* Buscar Cliente */
-.search-results {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 6px;
+/* Estilo de enlaces */
+a {
+    color: #4C8BF5; /* Azul */
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
+a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Estilo para los botones en las secciones de búsqueda y recaudo */
+form button {
+    margin-bottom: 20px; /* Espacio adicional debajo del botón */
+}
+
+/* Estilo para los resultados de búsqueda */
 .search-results div {
     margin-bottom: 15px;
     padding: 15px;
@@ -212,15 +400,6 @@ form button:hover {
     background-color: #218838;
 }
 
-/* Recaudado por Fecha */
-.recaudado-results {
-    margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 6px;
-}
-
 .recaudado-results .total-recaudado {
     background-color: #e9f7ef;
     padding: 15px;
@@ -228,109 +407,3 @@ form button:hover {
     border-radius: 4px;
     text-align: center;
 }
-
-.recaudado-results div {
-    margin-bottom: 10px;
-    padding: 15px;
-    border-bottom: 1px solid #eee;
-}
-
-.fecha-pago {
-    color: #777;
-    font-size: 0.9em;
-}
-
-/* Estilo de enlaces */
-a {
-    color: #4C8BF5; /* Azul */
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Agregar estos estilos al final de tu archivo styles.css */
-
-/* Estilos para mensajes de error */
-.form-error {
-    color: #dc3545;
-    font-size: 0.8rem;
-    margin-top: 5px;
-  }
-  
-  /* Estilos para mensajes de éxito */
-  .success-message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 15px;
-  }
-  
-  /* Estilos para mensajes de error */
-  .error-message {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 15px;
-  }
-  
-  /* Estilo para los campos con error */
-  input.error, textarea.error {
-    border-color: #dc3545;
-  }
-  
-  /* Estilos para los indicadores de carga */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-  
-  .loading-spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #007bff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Mejorar estilos para dispositivos móviles */
-  @media (max-width: 768px) {
-    .container {
-      width: 95%;
-    }
-    
-    form {
-      max-width: 100%;
-    }
-    
-    button {
-      width: 100%;
-    }
-    
-    table {
-      display: block;
-      overflow-x: auto;
-    }
-    
-    .modal-content {
-      width: 90%;
-      max-width: 300px;
-    }
-  }

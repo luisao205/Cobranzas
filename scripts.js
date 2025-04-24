@@ -72,8 +72,8 @@ async function loadClients() {
 function openAbonoModal(clientId) {
   const modal = document.getElementById("modal-abono");
   if (!modal) {
-    console.error("Modal no encontrado");
-    return;
+      console.error("Modal no encontrado");
+      return;
   }
   
   const closeModal = document.getElementById("close-modal");
@@ -84,62 +84,63 @@ function openAbonoModal(clientId) {
   modal.dataset.clientId = clientId;
   
   modal.style.display = "flex"; // Asegurarse de que se muestre como flex
+  modal.style.opacity = 1;  // Mostrar el modal con la transición de opacidad
 
   // Guardar abono
   saveAbonoButton.onclick = async () => {
-    const abonoAmount = parseFloat(amountInput.value);
-    if (isNaN(abonoAmount) || abonoAmount <= 0) {
-      alert("Por favor, ingresa un monto válido.");
-      return;
-    }
-
-    try {
-      // Obtener cliente actual
-      const clientDocRef = db.doc(`clientes/${clientId}`);
-      const clientSnap = await clientDocRef.get();
-      const clientData = clientSnap.data();
-      const newBalance = (clientData.balance || 0) - abonoAmount;
-      
-      // Actualizar balance
-      await clientDocRef.update({
-        balance: newBalance,
-        lastPayment: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      
-      // Registrar el abono en una subcollección
-      const abonosRef = db.collection(`clientes/${clientId}/abonos`);
-      await abonosRef.add({
-        amount: abonoAmount,
-        date: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      
-      alert(`Abono de ${abonoAmount} registrado correctamente.`);
-      loadClients(); // Recargar la lista de clientes
-      if (getCurrentPage() === 'index.html' || getCurrentPage() === '') {
-        loadFeaturedClient(); // Actualizar cliente destacado en la página de inicio
-      } else if (getCurrentPage() === 'perfil-cliente.html') {
-        loadClientProfile(clientId); // Actualizar perfil del cliente
+      const abonoAmount = parseFloat(amountInput.value);
+      if (isNaN(abonoAmount) || abonoAmount <= 0) {
+          alert("Por favor, ingresa un monto válido.");
+          return;
       }
-      modal.style.display = "none"; // Cerrar el modal
-      amountInput.value = ""; // Limpiar el input
-    } catch (error) {
-      console.error("Error al registrar abono:", error);
-      alert("Hubo un error al registrar el abono. Intente nuevamente.");
-    }
+
+      try {
+          // Obtener cliente actual
+          const clientDocRef = db.doc(`clientes/${clientId}`);
+          const clientSnap = await clientDocRef.get();
+          const clientData = clientSnap.data();
+          const newBalance = (clientData.balance || 0) - abonoAmount;
+
+          // Actualizar balance
+          await clientDocRef.update({
+              balance: newBalance,
+              lastPayment: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          // Registrar el abono en una subcolección
+          const abonosRef = db.collection(`clientes/${clientId}/abonos`);
+          await abonosRef.add({
+              amount: abonoAmount,
+              date: firebase.firestore.FieldValue.serverTimestamp()
+          });
+
+          alert(`Abono de ${abonoAmount} registrado correctamente.`);
+          loadClients(); // Recargar la lista de clientes
+          if (getCurrentPage() === 'index.html' || getCurrentPage() === '') {
+              loadFeaturedClient(); // Actualizar cliente destacado en la página de inicio
+          } else if (getCurrentPage() === 'perfil-cliente.html') {
+              loadClientProfile(clientId); // Actualizar perfil del cliente
+          }
+          modal.style.display = "none"; // Cerrar el modal
+          amountInput.value = ""; // Limpiar el input
+      } catch (error) {
+          console.error("Error al registrar abono:", error);
+          alert("Hubo un error al registrar el abono. Intente nuevamente.");
+      }
   };
 
   // Cerrar modal
   closeModal.onclick = () => {
-    modal.style.display = "none";
-    amountInput.value = "";
+      modal.style.display = "none";
+      amountInput.value = "";
   };
   
   // Cerrar modal al hacer clic fuera de él
   window.onclick = function(event) {
-    if (event.target === modal) {
-      modal.style.display = "none";
-      amountInput.value = "";
-    }
+      if (event.target === modal) {
+          modal.style.display = "none";
+          amountInput.value = "";
+      }
   };
 }
 
@@ -634,38 +635,42 @@ async function loadClientProfile(clientId) {
     `;
     
     // Cargar historial de pagos
-    const abonosRef = db.collection(`clientes/${clientId}/abonos`).orderBy('date', 'desc');
-    const abonosSnapshot = await abonosRef.get();
-      
-    const historialPagos = document.getElementById('historial-pagos');
-    
-    if (abonosSnapshot.empty) {
-      historialPagos.innerHTML = '<p>No hay pagos registrados</p>';
-      return;
-    }
-    
-    let historialHTML = '<ul class="lista-pagos">';
-    
-    abonosSnapshot.forEach(doc => {
-      const abonoData = doc.data();
-      const fecha = abonoData.date ? abonoData.date.toDate().toLocaleDateString() : 'Fecha desconocida';
-      
-      historialHTML += `
-        <li>
-          <span class="fecha">${fecha}</span>
-          <span class="monto">$${abonoData.amount}</span>
-        </li>
-      `;
-    });
-    
-    historialHTML += '</ul>';
-    historialPagos.innerHTML = historialHTML;
-    
-  } catch (error) {
-    console.error("Error al cargar perfil:", error);
-    document.getElementById('cliente-info').innerHTML = 
-      '<p>Error al cargar información del cliente</p>';
-  }
+const abonosRef = db.collection(`clientes/${clientId}/abonos`).orderBy('date', 'desc');
+const abonosSnapshot = await abonosRef.get();
+
+const historialPagos = document.getElementById('historial-pagos');
+
+if (abonosSnapshot.empty) {
+  historialPagos.innerHTML = '<p>No hay pagos registrados</p>';
+  return;
+}
+
+let historialHTML = '<ul class="lista-pagos">';
+
+abonosSnapshot.forEach(doc => {
+  const abonoData = doc.data();
+  const fecha = abonoData.date ? abonoData.date.toDate().toLocaleDateString() : 'Fecha desconocida';
+
+  // Añadir el emoji ✅ al principio
+  historialHTML += `
+    <li>
+      <span class="emoji">✅</span> <!-- Emoji de pago -->
+      <span class="fecha">${fecha}</span> - 
+      <span class="monto">$${abonoData.amount}</span>
+    </li>
+  `;
+});
+
+historialHTML += '</ul>';
+historialPagos.innerHTML = historialHTML;
+
+
+} catch (error) {
+  console.error("Error al cargar perfil:", error);
+  document.getElementById('cliente-info').innerHTML = 
+    '<p>Error al cargar información del cliente</p>';
+}
+
 }
 
 // Función para cargar cliente destacado (en la página de inicio)

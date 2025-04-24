@@ -29,38 +29,41 @@
       margin-bottom: 1rem;
     }
 
-    .summary {
-      display: flex;
-      gap: 1.5rem;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
+    /* Estilo de las tarjetas de resumen en la página de inicio */
+.summary {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Mejor alineación */
+}
 
-    .card {
-      flex: 1;
-      min-width: 200px;
-      padding: 1rem;
-      border-radius: 1rem;
-      background: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.06);
-      transition: transform 0.2s ease;
-    }
+.card {
+    flex: 1;
+    min-width: 200px;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
 
-    .card:hover {
-      transform: translateY(-4px);
-    }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Mejor efecto hover */
+}
 
-    .card h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #555;
-    }
+.card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
 
-    .card p {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #007bff;
-    }
+.card p {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
 
     .actions {
       display: grid;
