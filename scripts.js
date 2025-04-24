@@ -607,7 +607,6 @@ async function initPage() {
   }
 }
 
-// Función para cargar el perfil del cliente
 async function loadClientProfile(clientId) {
   try {
     const clientDocRef = db.doc(`clientes/${clientId}`);
@@ -627,6 +626,7 @@ async function loadClientProfile(clientId) {
       <h2>${clientData.name}</h2>
       <div class="cliente-detalles">
         <p><strong>Cédula:</strong> ${clientData.cedula || 'Información no disponible'}</p>
+        <p><strong>Saldo Inicial:</strong> $${clientData.loanAmount || 0}</p> <!-- Mostrar Saldo Inicial -->
         <p><strong>Balance actual:</strong> $${clientData.balance || 0}</p>
     `;
 
@@ -645,14 +645,10 @@ async function loadClientProfile(clientId) {
       clienteInfoHTML += `<p><strong>Dirección:</strong> ${clientData.address}</p>`;
     }
 
-    // Cerrar el div de detalles
     clienteInfoHTML += `</div>`;
-    
-    // Actualizar el HTML con la información del cliente
     clienteInfo.innerHTML = clienteInfoHTML;
 
-    // Cargar historial de pagos
-    loadPaymentHistory(clientId);
+    loadPaymentHistory(clientId);  // Cargar historial de pagos
 
   } catch (error) {
     console.error("Error al cargar perfil:", error);
@@ -660,6 +656,7 @@ async function loadClientProfile(clientId) {
       '<p>Error al cargar información del cliente</p>';
   }
 }
+
 
 // Función para cargar historial de pagos
 async function loadPaymentHistory(clientId) {

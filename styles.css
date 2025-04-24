@@ -175,7 +175,7 @@ button:hover {
 }
 
 
-/* Estilo de la tabla de clientes */
+/* Estilo para la tabla de clientes */
 table {
     width: 100%;
     margin-top: 20px;
@@ -187,6 +187,8 @@ table th, table td {
     padding: 12px 15px;
     text-align: left;
     border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 table th {
@@ -198,9 +200,31 @@ table tr:hover {
     background-color: #f8f9fa;
 }
 
-/* Modal - Corregido */
+/* Estilo para los botones en la tabla de tlclientes */
+#client-list button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover para el botón "Abonar" */
+#client-list button:hover {
+    background-color: #0056b3;
+}
+
+/* Hover para el botón "Eliminar" */
+#client-list button.eliminar:hover {
+    background-color: #dc3545;  /* Rojo para el botón Eliminar */
+}
+
+
+/* Modal - Estilo general */
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -211,20 +235,20 @@ table tr:hover {
     align-items: center;
     z-index: 9999;
     opacity: 0;
-    transition: opacity 0.3s ease-in-out; /* Transición suave */
+    transition: opacity 0.3s ease-in-out;
 }
 
 /* Contenido del modal */
 .modal-content {
     background-color: white;
     padding: 20px;
-    border-radius: 12px; /* Bordes redondeados */
+    border-radius: 12px;
     width: 300px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    animation: fadeInModal 0.3s ease-out; /* Animación al abrir */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeInModal 0.3s ease-out;
 }
 
-/* Animación del modal */
+/* Animación para el modal */
 @keyframes fadeInModal {
     0% { opacity: 0; }
     100% { opacity: 1; }
@@ -245,23 +269,22 @@ table tr:hover {
     border-radius: 4px;
 }
 
+/* Estilo para los botones dentro del modal */
 .modal-content button {
     width: 100%;
-    padding: 10px;
-    background-color: #4C8BF5;
+    padding: 12px;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    transition: background-color 0.2s;
+    margin-top: 15px;
+    transition: background-color 0.2s ease;
 }
 
 .modal-content button:hover {
-    background-color: #4081D3;
+    background-color: #218838;
 }
-
 
 /* Estilos para mensajes de error */
 .form-error {
