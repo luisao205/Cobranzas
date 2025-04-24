@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Cliente</title>
-    <link rel="stylesheet" href="styles.css">
-    <!-- Si es .ico en la raíz -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <!-- Si está en una carpeta o es .png -->
-  <link rel="icon" href="img/logo.png" type="image/png">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Editar Cliente</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="img/logo.png" type="image/png">
+    </head>
+    
 <body>
     <div class="container">
         <header>
@@ -19,7 +18,7 @@
             </nav>
         </header>
         <main>
-            <form action="#" method="POST">
+            <form id="edit-client-form" action="#" method="POST">
                 <label for="name">Nombre del Cliente</label>
                 <input type="text" id="name" name="name" required>
 
@@ -39,17 +38,83 @@
                 <input type="number" id="loanAmount" name="loanAmount" required>
 
                 <label for="paymentAmount">Cuota a Pagar</label>
-                <input type="number" id="paymentAmount" name="paymentAmount" required>
+                <input type="number" id="paymentAmount" name="paymentAmount" step="0.01" required>
 
                 <button type="submit">Actualizar Cliente</button>
                 <button type="button" onclick="window.history.back();" class="secondary-button">Cancelar</button>
             </form>
         </main>
     </div>
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <!-- Nuestro script -->
     <script src="scripts.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const clientId = urlParams.get('id');
+
+        async function loadClientData() {
+            if (clientId) {
+                try {
+                    const clientDoc = await db.collection('clientes').doc(clientId).get();
+                    if (clientDoc.exists) {
+                        const clientData = clientDoc.data();
+                        document.getElementById('name').value = clientData.name || '';
+                        document.getElementById('cedula').value = clientData.cedula || '';
+                        document.getElementById('phone').value = clientData.phone || '';
+                        document.getElementById('email').value = clientData.email || '';
+                        document.getElementById('address').value = clientData.address || '';
+                        document.getElementById('loanAmount').value = clientData.loanAmount || 0;
+                        document.getElementById('paymentAmount').value = clientData.paymentAmount || 0;
+                    } else {
+                        alert('Cliente no encontrado.');
+                        window.location.href = 'tlclientes.html';
+                    }
+                } catch (error) {
+                    console.error('Error al cargar datos del cliente:', error);
+                    alert('Error al cargar datos del cliente.');
+                }
+            } else {
+                alert('ID de cliente no proporcionado.');
+                window.location.href = 'tlclientes.html';
+            }
+        }
+
+        loadClientData();
+
+        document.getElementById('edit-client-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const cedula = document.getElementById('cedula').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const loanAmount = parseFloat(document.getElementById('loanAmount').value);
+            const paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
+
+            if (!name || !cedula || !phone || !email || !address || isNaN(loanAmount) || isNaN(paymentAmount)) {
+                alert('Por favor, llena todos los campos correctamente.');
+                return;
+            }
+
+            try {
+                await db.collection('clientes').doc(clientId).update({
+                    name: name,
+                    cedula: cedula,
+                    phone: phone,
+                    email: email,
+                    address: address,
+                    loanAmount: loanAmount,
+                    paymentAmount: paymentAmount
+                });
+
+                alert('Cliente actualizado correctamente.');
+                window.location.href = 'tlclientes.html';
+            } catch (error) {
+                console.error('Error al actualizar cliente:', error);
+                alert('Error al actualizar el cliente. Intente nuevamente.');
+            }
+        });
+    </script>
 </body>
 </html>
